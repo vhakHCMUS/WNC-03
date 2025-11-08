@@ -1,107 +1,147 @@
 # IA03-User-Registration
 
-A full-stack user registration application built with NestJS backend, React frontend, and SQLite database. This project demonstrates secure user registration with modern web technologies.
+A full-stack user registration application with **NestJS backend**, **React frontend**, and **SQLite database**. 
+
+Perfect for local development - no external database setup required! 🚀
+
+---
+
+## 🎯 Quick Start (3 Steps)
+
+### Prerequisites
+- Node.js (v18+)
+- npm (v9+)
+
+### Step 1: Clone & Navigate
+```bash
+git clone <repository-url>
+cd IA03-User-Registration
+```
+
+### Step 2: Install Everything
+```bash
+# Install root dependencies
+npm install
+
+# Install backend dependencies
+cd backend
+npm install
+npx prisma generate
+npx prisma migrate dev --name init
+cd ..
+
+# Install frontend dependencies
+cd frontend
+npm install
+cd ..
+```
+
+### Step 3: Run the App
+```bash
+npm run dev
+```
+
+**That's it!** 🎉
+
+- Frontend: **http://localhost:5173**
+- Backend API: **http://localhost:4000**
+
+---
 
 ## 🚀 Features
 
-### Backend
-- **NestJS** - Progressive Node.js framework
-- **Prisma ORM** - Type-safe database access
-- **SQLite** - Lightweight embedded database
-- **Bcrypt** - Secure password hashing
-- **Class Validator** - Request validation
-- **CORS** - Cross-origin resource sharing enabled
+### Backend (NestJS + Prisma + SQLite)
+- ✅ User registration with password hashing (bcrypt)
+- ✅ Email validation
+- ✅ SQLite database (auto-created, no setup needed)
+- ✅ RESTful API with error handling
+- ✅ CORS enabled
 
-### Frontend
-- **React 18** with TypeScript
-- **Vite** - Fast build tool
-- **React Router** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui** - Beautiful UI components
-- **React Hook Form** - Form validation
-- **Yup** - Schema validation
-- **React Query** - Server state management
-- **Axios** - HTTP client
+### Frontend (React + Vite + Tailwind)
+- ✅ Modern React with TypeScript
+- ✅ Responsive design (mobile-friendly)
+- ✅ Form validation (React Hook Form + Yup)
+- ✅ Beautiful UI (shadcn/ui components)
+- ✅ Real-time API integration (React Query)
 
-### Security Features
-- Password hashing with bcrypt (10 salt rounds)
-- Email validation
-- Input sanitization
-- Error handling
+---
 
-## 📋 Prerequisites
+## 📖 How to Use
 
-- Node.js (v18 or higher)
-- npm (v9 or higher)
+### 1. Sign Up a New User
+1. Go to **http://localhost:5173/signup**
+2. Enter email: `test@example.com`
+3. Enter password: `password123` (min 6 characters)
+4. Click **Sign Up**
+5. ✅ Success! User created
 
-## 🛠️ Installation & Setup
+### 2. Test the Login Page
+1. Go to **http://localhost:5173/login**
+2. Enter any credentials
+3. See mock login success message
 
-### Quick Start
-
-1. **Navigate to the project directory:**
-   ```bash
-   cd IA03-User-Registration
-   ```
-
-2. **Install root dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Install backend dependencies:**
-   ```bash
-   cd backend
-   npm install
-   ```
-
-4. **Generate Prisma Client and run migrations:**
-   ```bash
-   npx prisma generate
-   npx prisma migrate dev --name init
-   cd ..
-   ```
-
-5. **Install frontend dependencies:**
-   ```bash
-   cd frontend
-   npm install
-   cd ..
-   ```
-
-6. **Run the application:**
-   ```bash
-   npm run dev
-   ```
-
-This will start both the backend (port 4000) and frontend (port 5173) concurrently.
-
-### Alternative: Install All at Once
-
-From the root directory:
+### 3. API Testing (Optional)
 ```bash
-npm run install:all
+# Register a user via API
+curl -X POST http://localhost:4000/user/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"securepass"}'
 ```
 
-## 🎯 Usage
+---
 
-Once the application is running:
+## 🛠️ Alternative Commands
 
-- **Frontend:** http://localhost:5173
-- **Backend API:** http://localhost:4000
+### Run Backend Only
+```bash
+cd backend
+npm run start:dev
+```
 
-### Available Pages
+### Run Frontend Only
+```bash
+cd frontend
+npm run dev
+```
 
-1. **Home** (`/`) - Landing page with project information
-2. **Sign Up** (`/signup`) - User registration form
-3. **Login** (`/login`) - Login form (mock authentication)
+### Reset Database
+```bash
+cd backend
+rm -f prisma/dev.db
+npx prisma migrate dev --name init
+```
 
-### API Endpoints
+---
 
-#### POST `/user/register`
+## 📁 Project Structure
 
-Register a new user.
+```
+IA03-User-Registration/
+├── backend/              # NestJS API
+│   ├── src/
+│   │   ├── user/        # User module (controller, service, dto)
+│   │   ├── prisma/      # Prisma service
+│   │   └── main.ts
+│   ├── prisma/
+│   │   └── schema.prisma # Database schema
+│   └── package.json
+├── frontend/             # React app
+│   ├── src/
+│   │   ├── pages/       # Home, Login, SignUp
+│   │   ├── components/  # UI components
+│   │   └── lib/         # Utils & API client
+│   └── package.json
+└── package.json          # Root (runs both servers)
+```
 
-**Request Body:**
+---
+
+## 🔌 API Reference
+
+### POST `/user/register`
+Register a new user
+
+**Request:**
 ```json
 {
   "email": "user@example.com",
@@ -117,221 +157,110 @@ Register a new user.
   "user": {
     "id": 1,
     "email": "user@example.com",
-    "createdAt": "2024-01-01T00:00:00.000Z"
+    "createdAt": "2025-11-09T00:00:00.000Z"
   }
 }
 ```
 
 **Error Responses:**
+- `400` - Invalid email or password too short
+- `409` - Email already exists
+- `500` - Database error
 
-- `400 Bad Request` - Invalid input (email format, password length)
-- `409 Conflict` - Email already exists
-- `500 Internal Server Error` - Database error
-
-## 📁 Project Structure
-
-```
-IA03-User-Registration/
-├── backend/
-│   ├── src/
-│   │   ├── prisma/
-│   │   │   ├── prisma.module.ts
-│   │   │   └── prisma.service.ts
-│   │   ├── user/
-│   │   │   ├── dto/
-│   │   │   │   └── register-user.dto.ts
-│   │   │   ├── user.controller.ts
-│   │   │   ├── user.module.ts
-│   │   │   └── user.service.ts
-│   │   ├── app.module.ts
-│   │   └── main.ts
-│   ├── prisma/
-│   │   └── schema.prisma
-│   ├── .env
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── nest-cli.json
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── ui/
-│   │   │   │   ├── button.tsx
-│   │   │   │   ├── card.tsx
-│   │   │   │   ├── input.tsx
-│   │   │   │   └── label.tsx
-│   │   │   └── Layout.tsx
-│   │   ├── pages/
-│   │   │   ├── Home.tsx
-│   │   │   ├── Login.tsx
-│   │   │   └── SignUp.tsx
-│   │   ├── lib/
-│   │   │   ├── api.ts
-│   │   │   └── utils.ts
-│   │   ├── App.tsx
-│   │   ├── main.tsx
-│   │   └── index.css
-│   ├── index.html
-│   ├── package.json
-│   ├── tsconfig.json
-│   ├── vite.config.ts
-│   ├── tailwind.config.js
-│   └── postcss.config.js
-├── package.json
-├── .gitignore
-└── README.md
-```
-
-## 🧪 Testing the Application
-
-### Manual Testing
-
-1. **Navigate to Sign Up page** (http://localhost:5173/signup)
-2. **Enter a valid email** (e.g., test@example.com)
-3. **Enter a password** (minimum 6 characters)
-4. **Click "Sign Up"**
-5. **Verify success message**
-
-### Test Cases
-
-**Valid Registration:**
-- Email: `john@example.com`
-- Password: `password123`
-- Expected: Success message
-
-**Duplicate Email:**
-- Register the same email twice
-- Expected: "Email already exists" error
-
-**Invalid Email:**
-- Email: `invalid-email`
-- Expected: "Email must be valid" error
-
-**Short Password:**
-- Password: `123`
-- Expected: "Password must be at least 6 characters long" error
-
-## 📜 Available Scripts
-
-### Root Directory
-
-- `npm run dev` - Start both backend and frontend
-- `npm run start:backend` - Start backend only
-- `npm run start:frontend` - Start frontend only
-- `npm run install:all` - Install all dependencies
-
-### Backend
-
-- `npm run start:dev` - Start backend in watch mode
-- `npm run build` - Build backend
-- `npm run prisma:generate` - Generate Prisma Client
-- `npm run prisma:migrate` - Run database migrations
-
-### Frontend
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-
-## 🔧 Configuration
-
-### Backend Environment Variables
-
-Located in `backend/.env`:
-
-```env
-DATABASE_URL="file:./dev.db"
-PORT=4000
-```
-
-### Database Schema
-
-The User model (defined in `backend/prisma/schema.prisma`):
-
-```prisma
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-}
-```
-
-## 🎨 UI/UX Features
-
-- Responsive design (mobile, tablet, desktop)
-- Accessible form controls
-- Loading states during API calls
-- Success and error feedback
-- Form validation with helpful error messages
-- Clean and modern interface
-
-## 🔒 Security Considerations
-
-- Passwords are hashed using bcrypt before storage
-- Email uniqueness is enforced at database level
-- Input validation on both client and server
-- CORS configured for localhost development
-- SQL injection prevention via Prisma ORM
+---
 
 ## 🐛 Troubleshooting
 
-### Port Already in Use
+### Port Already in Use?
+**Backend (4000):** Change `PORT` in `backend/.env`
+**Frontend (5173):** Vite will auto-select next available port
 
-If ports 4000 or 5173 are already in use:
+### Can't Connect to Backend?
+Check that backend is running on port 4000:
+```bash
+curl http://localhost:4000/user/register
+```
 
-1. **Backend:** Change `PORT` in `backend/.env`
-2. **Frontend:** Vite will automatically try the next available port
+### Module Not Found Errors?
+Reinstall dependencies:
+```bash
+cd backend && npm install && cd ..
+cd frontend && npm install && cd ..
+```
 
-### Database Connection Issues
-
-Reset the database:
+### Database Issues?
+Delete and recreate:
 ```bash
 cd backend
-rm -f prisma/dev.db
+rm -f prisma/dev.db prisma/dev.db-journal
 npx prisma migrate dev --name init
 ```
 
-### Module Not Found Errors
+---
 
-Reinstall dependencies:
+## 💡 Key Technologies
+
+| Tech | Purpose |
+|------|---------|
+| **NestJS** | Backend framework |
+| **Prisma** | Database ORM |
+| **SQLite** | Embedded database |
+| **React 18** | Frontend UI |
+| **Vite** | Fast build tool |
+| **TypeScript** | Type safety |
+| **Tailwind CSS** | Styling |
+| **React Query** | API state management |
+| **Bcrypt** | Password security |
+
+---
+
+## 📝 Scripts Reference
+
 ```bash
-npm run install:all
+# From root directory
+npm run dev              # Run both servers
+npm run start:backend    # Backend only
+npm run start:frontend   # Frontend only
+
+# From backend/
+npm run start:dev        # Development mode
+npx prisma generate      # Generate Prisma client
+npx prisma migrate dev   # Run migrations
+npx prisma studio        # Open database GUI
+
+# From frontend/
+npm run dev              # Development server
+npm run build            # Production build
 ```
 
-## 📚 Technologies Used
+---
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| NestJS | ^10.3.0 | Backend framework |
-| Prisma | ^5.7.1 | ORM |
-| React | ^18.2.0 | Frontend library |
-| TypeScript | ^5.3.3 | Type safety |
-| Vite | ^5.0.10 | Build tool |
-| Tailwind CSS | ^3.4.0 | Styling |
-| React Query | ^5.17.9 | State management |
-| React Hook Form | ^7.49.3 | Form handling |
-| Yup | ^1.3.3 | Schema validation |
-| Bcrypt | ^5.1.1 | Password hashing |
+## ✨ What Makes This Easy?
 
-## 📝 Evaluation Rubric Compliance
+- 🎯 **SQLite** - No database server setup
+- 🔧 **Concurrently** - Run both servers with one command
+- 📦 **All-in-one** - Complete project in single repository
+- 🚀 **Fast** - Vite for instant frontend updates
+- 🛡️ **Secure** - Password hashing included
+- 🎨 **Beautiful** - Pre-built UI components
 
-- ✅ **Backend Implementation (2 pts)** - NestJS with Prisma, User entity, registration endpoint
-- ✅ **Error Handling (2 pts)** - Comprehensive error handling for duplicate emails, invalid inputs, and database errors
-- ✅ **Frontend Routing (1 pt)** - React Router with Home, Login, and SignUp pages
-- ✅ **SignUp Page (2 pts)** - Full form with validation, React Query mutation, error/success states
-- ✅ **Login Page (2 pts)** - Form with validation and mock authentication
-- ✅ **Deployment Ready (1 pt)** - Simple setup with SQLite for easy local deployment
+---
 
-## 👤 Author
+## 🎓 Learning Resources
 
-Your Name
+- [NestJS Documentation](https://docs.nestjs.com)
+- [Prisma Guide](https://www.prisma.io/docs)
+- [React Documentation](https://react.dev)
+- [Tailwind CSS](https://tailwindcss.com)
+
+---
 
 ## 📄 License
 
 MIT
 
-## 🙏 Acknowledgments
+---
 
-- NestJS for the excellent backend framework
-- Shadcn/ui for the beautiful UI components
-- Prisma for the type-safe database access
+**Ready to start? Run `npm run dev` and visit http://localhost:5173** 🚀
+
+
