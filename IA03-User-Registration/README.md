@@ -246,7 +246,68 @@ npm run build            # Production build
 
 ---
 
-## 🎓 Learning Resources
+## � Deployment
+
+### Frontend Deployment (Vercel, Netlify, Render, etc.)
+
+When deploying the frontend to platforms like Vercel, Netlify, or Render:
+
+#### ⚙️ Build Settings:
+- **Root Directory:** `frontend`
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
+- **Install Command:** `npm install`
+
+#### 🔧 Environment Variables:
+Create an environment variable for the backend API URL:
+```
+VITE_API_URL=https://your-backend-url.com
+```
+
+Then update `frontend/src/lib/api.ts`:
+```typescript
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+```
+
+#### 📋 Platform-Specific Instructions:
+
+**Vercel:**
+1. Import your GitHub repository
+2. Set **Root Directory** to `frontend`
+3. Framework Preset: `Vite`
+4. Add environment variable: `VITE_API_URL`
+
+**Netlify:**
+1. Connect your repository
+2. Base directory: `frontend`
+3. Build command: `npm run build`
+4. Publish directory: `frontend/dist`
+
+**Render:**
+1. Create new Static Site
+2. Root Directory: `frontend`
+3. Build Command: `npm run build`
+4. Publish Directory: `dist`
+
+---
+
+### Backend Deployment
+
+For SQLite in production, consider:
+- **Railway.app** - Easy deployment with persistent storage
+- **Render.com** - Free tier with SQLite support
+- **Fly.io** - Supports SQLite with volumes
+
+**Note:** For production, consider migrating to PostgreSQL or MySQL for better scalability.
+
+#### Backend Deployment Settings:
+- **Root Directory:** `backend`
+- **Build Command:** `npm run build`
+- **Start Command:** `npm run start:prod`
+
+---
+
+## �🎓 Learning Resources
 
 - [NestJS Documentation](https://docs.nestjs.com)
 - [Prisma Guide](https://www.prisma.io/docs)
